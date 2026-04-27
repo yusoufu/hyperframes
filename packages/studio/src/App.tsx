@@ -43,10 +43,7 @@ import {
   getTimelineZoomPercent,
 } from "./player/components/timelineZoom";
 import {
-  TIMELINE_TOGGLE_SHORTCUT_LABEL,
-  getTimelineEditorHintDismissed,
   getTimelineToggleTitle,
-  setTimelineEditorHintDismissed,
   shouldHandleTimelineToggleHotkey,
 } from "./utils/timelineDiscovery";
 import { PropertyPanel } from "./components/editor/PropertyPanel";
@@ -714,9 +711,6 @@ export function StudioApp() {
   const [globalDragOver, setGlobalDragOver] = useState(false);
   const [appToast, setAppToast] = useState<AppToast | null>(null);
   const [timelineVisible, setTimelineVisible] = useState(true);
-  const [timelineEditorHintDismissed, setTimelineEditorHintState] = useState(
-    getTimelineEditorHintDismissed,
-  );
   const dragCounterRef = useRef(0);
   const toastTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastBlockedTimelineToastAtRef = useRef(0);
@@ -755,10 +749,6 @@ export function StudioApp() {
   );
   const toggleTimelineVisibility = useCallback(() => {
     setTimelineVisible((visible) => !visible);
-  }, []);
-  const dismissTimelineEditorHint = useCallback(() => {
-    setTimelineEditorHintState(true);
-    setTimelineEditorHintDismissed(true);
   }, []);
   const handleTimelineToggleHotkey = useCallback(
     (event: KeyboardEvent) => {
@@ -910,31 +900,6 @@ export function StudioApp() {
   );
   const timelineToolbar = (
     <div className="border-b border-neutral-800/40 bg-neutral-950/96">
-      {timelineVisible && timelineElements.length > 0 && !timelineEditorHintDismissed && (
-        <div className="px-3 pt-3">
-          <div className="flex items-start justify-between gap-3 rounded-xl border border-studio-accent/20 bg-studio-accent/[0.07] px-3 py-3">
-            <div className="min-w-0">
-              <div className="text-[11px] font-semibold text-neutral-100">Timeline editor</div>
-              <p className="mt-1 text-[11px] leading-5 text-neutral-300">
-                Drag clips to move timing, and drag clip edges to resize them when handles are
-                available. Hide the panel anytime and bring it back with{" "}
-                <span className="font-mono text-[10px] text-studio-accent">
-                  {TIMELINE_TOGGLE_SHORTCUT_LABEL}
-                </span>
-                .
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={dismissTimelineEditorHint}
-              className="flex-shrink-0 rounded-md border border-neutral-700 px-2 py-1 text-[10px] font-medium text-neutral-300 transition-colors hover:border-neutral-500 hover:text-neutral-100"
-            >
-              Dismiss
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="flex items-center justify-between px-3 py-2">
         <div className="text-[10px] font-medium uppercase tracking-[0.16em] text-neutral-500">
           Timeline
